@@ -93,16 +93,57 @@
     </div>
 
     <script>
-        // Xử lý đăng nhập cơ bản
+        // Xử lý đăng nhập với validation
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             const messageDiv = document.getElementById('message');
             
-            if (username && password) {
-                messageDiv.innerHTML = '<p style="color: green; font-weight: bold;">✓ Đăng nhập thành công!</p>';
+            // Xóa message cũ
+            messageDiv.innerHTML = '';
+            
+            // Validation
+            if (!username || !password) {
+                messageDiv.innerHTML = '<p style="color: #e74c3c; font-weight: bold;">⚠️ Vui lòng nhập đầy đủ thông tin!</p>';
+                return;
+            }
+            
+            if (username.length < 3) {
+                messageDiv.innerHTML = '<p style="color: #e74c3c; font-weight: bold;">⚠️ Tên đăng nhập phải có ít nhất 3 ký tự!</p>';
+                return;
+            }
+            
+            if (password.length < 6) {
+                messageDiv.innerHTML = '<p style="color: #e74c3c; font-weight: bold;">⚠️ Mật khẩu phải có ít nhất 6 ký tự!</p>';
+                return;
+            }
+            
+            // Giả lập đăng nhập thành công
+            messageDiv.innerHTML = '<p style="color: #27ae60; font-weight: bold;">✓ Đăng nhập thành công!</p>';
+            
+            // Reset form sau 2 giây
+            setTimeout(() => {
+                document.getElementById('loginForm').reset();
+                messageDiv.innerHTML = '';
+            }, 2000);
+        });
+        
+        // Thêm real-time validation
+        document.getElementById('username').addEventListener('input', function() {
+            if (this.value.length > 0 && this.value.length < 3) {
+                this.style.borderColor = '#e74c3c';
+            } else {
+                this.style.borderColor = '#e0e0e0';
+            }
+        });
+        
+        document.getElementById('password').addEventListener('input', function() {
+            if (this.value.length > 0 && this.value.length < 6) {
+                this.style.borderColor = '#e74c3c';
+            } else {
+                this.style.borderColor = '#e0e0e0';
             }
         });
     </script>
